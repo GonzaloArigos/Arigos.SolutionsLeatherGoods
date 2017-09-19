@@ -47,6 +47,9 @@
     <Compile Include="Country.cs" />
     <Compile Include="Dealer.cs" />
     <Compile Include="EntityBase.cs" />
+    <Compile Include="Language.cs" />
+    <Compile Include="LocaleResourceKey.cs" />
+    <Compile Include="LocaleStringResource.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderDetail.cs" />
     <Compile Include="OrderNumber.cs" />

@@ -1,0 +1,7 @@
+﻿<br />
+<span class="glyphicon glyphicon-flag">Idioma</span>
+<select ng-change="CambiarIdioma(culture)" ng-model="culture" class="input-sm" type="text">
+    <option value="" class="form-control" selected="selected">Language</option>
+    <option ng-click="CambiarIdioma(culture)"  value="ES-AR">Español</option>
+    <option  ng-click="CambiarIdioma(culture)" value="EN-US">English</option>
+</select>

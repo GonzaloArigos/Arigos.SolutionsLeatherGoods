@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ASF.Entities.Category>
+﻿@model ASF.UI.WbSite.Models.CategoryViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -29,7 +29,7 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model.Categorias) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)

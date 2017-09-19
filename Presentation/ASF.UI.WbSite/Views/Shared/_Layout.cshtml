@@ -151,7 +151,7 @@
     @* You can use the head section to render additional meta tags. *@
     @RenderSection("head", required: false)
 </head>
-<body>
+<body ng-app="app" ng-controller="HomeController">
     @* Skip to main content link for people who use screen readers. sr-only makes this only visible to screen readers.
         See http://a11yproject.com/posts/skip-nav-links/. *@
     <a href="#main" class="sr-only sr-only-focusable">Skip to main content</a>
@@ -168,20 +168,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li><a href="/#!/Category"><span aria-hidden="true" class="fa fa-users"></span> Categorias</a></li>
+                    <li><a href="/#!/Product"><span aria-hidden="true" class="fa fa-users"></span> Products</a></li>
                     <li><a href="@Url.RouteUrl(HomeControllerRoute.GetAbout)"><span aria-hidden="true" class="fa fa-users"></span> About</a></li>
                     <li><a href="@Url.RouteUrl(HomeControllerRoute.GetContact)"><span aria-hidden="true" class="fa fa-phone"></span> Contact</a></li>
                     <li><a href="@Url.RouteUrl(HomeControllerRoute.GetFeed)"><span aria-hidden="true" class="fa fa-rss"></span> RSS</a></li>
-                    @if (HttpContext.Current.IsDebuggingEnabled)
-                    {
-                        // if <compilation debug="true"> is set in Web.config.
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown"><span aria-hidden="true" class="fa fa-cogs"></span> Debug <span aria-hidden="true" class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="/@ConfigurationManager.AppSettings["elmah.mvc.route"]"><span aria-hidden="true" class="fa fa-life-ring"></span> Elmah</a></li>
-                                <li><a href="/glimpse.axd"><span aria-hidden="true" class="fa fa-line-chart"></span> Glimpse</a></li>
-                                <li><a href="/trace.axd"><span aria-hidden="true" class="fa fa-heart"></span> Tracing</a></li>
-                            </ul>
-                        </li>
+                                      
+                                           
+                       
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -209,6 +203,19 @@
             <p>&copy; @DateTime.Now.Year - @Application.Name</p>
         </footer>
     </div>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular-animate.js"></script>
+    <script src="~/Scripts/angular-aria.js"></script>
+    <script src="~/Scripts/angular-messages.min.js"></script>
+    <script src="~/Scripts/angular-route.min.js"></script>
+
+    <script src="~/SPA/Controllers/AppController.js"></script>
+    <script src="~/SPA/Controllers/CategoryController.js"></script>
+    <script src="~/SPA/Controllers/ProductController.js"></script>
+
+    <script src="~/SPA/Services/CategoryService.js"></script>
+    <script src="~/SPA/Services/LanguageService.js"></script>
+    <script src="~/SPA/Services/ProductService.js"></script>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")

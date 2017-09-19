@@ -27,7 +27,7 @@ namespace ASF.Data
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public Category Create(Category category)
+        public ASF.Entities.Category Create(ASF.Entities.Category category)
         {
             const string sqlStatement ="INSERT INTO dbo.Category ([Name], [CreatedOn], [CreatedBy], [ChangedOn], [ChangedBy]) " +
                 "VALUES(@Name, @CreatedOn, @CreatedBy, @ChangedOn, @ChangedBy); SELECT SCOPE_IDENTITY();";
@@ -51,7 +51,7 @@ namespace ASF.Data
         /// 
         /// </summary>
         /// <param name="category"></param>
-        public void UpdateById(Category category)
+        public void UpdateById(ASF.Entities.Category category)
         {
             const string sqlStatement = "UPDATE dbo.Category " +
                 "SET [Name]=@Name, " +
@@ -95,12 +95,12 @@ namespace ASF.Data
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Category SelectById(int id)
+        public ASF.Entities.Category SelectById(int id)
         {
             const string sqlStatement = "SELECT [Id], [Name], [CreatedOn], [CreatedBy], [ChangedOn], [ChangedBy] " +
                 "FROM dbo.Category WHERE [Id]=@Id ";
 
-            Category category = null;
+            ASF.Entities.Category category = null;
             var db = DatabaseFactory.CreateDatabase(ConnectionName);
             using (var cmd = db.GetSqlStringCommand(sqlStatement))
             {
@@ -118,12 +118,12 @@ namespace ASF.Data
         /// 
         /// </summary>
         /// <returns></returns>		
-        public List<Category> Select()
+        public List<ASF.Entities.Category> Select()
         {
             // WARNING! Performance
             const string sqlStatement = "SELECT [Id], [Name], [CreatedOn], [CreatedBy], [ChangedOn], [ChangedBy] FROM dbo.Category ";
 
-            var result = new List<Category>();
+            var result = new List<ASF.Entities.Category>();
             var db = DatabaseFactory.CreateDatabase(ConnectionName);
             using (var cmd = db.GetSqlStringCommand(sqlStatement))
             {
@@ -145,9 +145,9 @@ namespace ASF.Data
         /// </summary>
         /// <param name="dr">Objeto DataReader.</param>
         /// <returns>Retorna un objeto Categoria.</returns>		
-        private static Category LoadCategory(IDataReader dr)
+        private static ASF.Entities.Category LoadCategory(IDataReader dr)
         {
-            var category = new Category
+            var category = new ASF.Entities.Category
             {
                 Id = GetDataValue<int>(dr, "Id"),
                 Name = GetDataValue<string>(dr, "Name"),

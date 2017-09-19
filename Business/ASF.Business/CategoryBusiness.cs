@@ -24,7 +24,7 @@ namespace ASF.Business
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        public Category Add(Category category)
+        public ASF.Entities.Category Add(ASF.Entities.Category category)
         {
             var categoryDac = new CategoryDac();
             return categoryDac.Create(category);
@@ -44,7 +44,7 @@ namespace ASF.Business
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Category> All()
+        public List<ASF.Entities.Category> All()
         {
             var categoryDac = new CategoryDac();
             var result = categoryDac.Select();
@@ -56,7 +56,7 @@ namespace ASF.Business
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Category Find(int id)
+        public ASF.Entities.Category Find(int id)
         {
             var categoryDac = new CategoryDac();
             var result = categoryDac.SelectById(id);
@@ -67,7 +67,7 @@ namespace ASF.Business
         /// 
         /// </summary>
         /// <param name="category"></param>
-        public void Edit(Category category)
+        public void Edit(ASF.Entities.Category category)
         {
             var categoryDac = new CategoryDac();
             categoryDac.UpdateById(category);

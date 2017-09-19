@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ASF.Entities;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -67,5 +68,10 @@ namespace ASF.Framework.Utilities
 
             return _allCultures.ContainsKey(nameKey) ? _allCultures[nameKey] : null;
         }
+
+        //public static Language GetCurrentLanguage(string culture)
+        //{
+
+        //}
     }
 }

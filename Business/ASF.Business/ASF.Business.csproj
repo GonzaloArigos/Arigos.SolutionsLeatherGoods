@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CategoryBusiness.cs" />
+    <Compile Include="LangBusiness.cs" />
+    <Compile Include="ProductBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +53,10 @@
     <ProjectReference Include="..\..\Shared\ASF.Entities\ASF.Entities.csproj">
       <Project>{5F7C08E8-891E-41C7-9E8D-E94B75222C0B}</Project>
       <Name>ASF.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\ASF.Framework\ASF.Framework.csproj">
+      <Project>{b07faacc-7f82-4fdb-9bbb-666711eef0f4}</Project>
+      <Name>ASF.Framework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

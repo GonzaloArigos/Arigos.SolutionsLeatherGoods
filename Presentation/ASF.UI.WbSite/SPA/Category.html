@@ -1,0 +1,40 @@
+﻿<div class="md-toolbar-tools">
+
+    <h2><span class="glyphicon glyphicon-edit"></span> {{CategoriasViewModel.Idioma.Category}}</h2>
+
+</div>
+
+<div ng-show="!Crear" class="table-responsive">
+    <button ng-click="Crear=true;" class="btn btn-success">{{CategoriasViewModel.Idioma.New}}</button>
+    <br />
+    <br />
+    <table class="table table-condensed shortMargin">
+        <tr>
+            <th>ID</th>
+            <th>{{CategoriasViewModel.Idioma.Name}}</th>
+            <th>{{CategoriasViewModel.Idioma.Actions}}</th>
+        </tr>     
+        <tr ng-repeat="x in CategoriasViewModel.Categorias">
+            <td>
+               {{x.Id}} 
+            </td>
+            <td>
+                <p ng-show="!x.Editar">{{x.Name}}</p>
+                <input class="form-control" ng-show="x.Editar" type="text" value="{{x.Name}}" ng-model="x.Name" />
+
+            </td>
+            <td>
+                <button ng-show="!x.Editar" ng-click="x.Editar = true"  class="btn" type="button"><span class="glyphicon glyphicon-edit"></span></button>
+                <button ng-show="x.Editar == true" ng-click="x.Editar = false; Editar(x)" class="btn btn-black" type="button"><span class="glyphicon glyphicon-ok"></span></button>
+               
+                <button ng-click="Delete(x.Id)" class="btn" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div ng-show="Crear">
+    <label>{{CategoriasViewModel.Idioma.Name}}</label>
+    <input ng-model="Nuevo.Name" placeholder="Nombre" type="text" />
+    <button ng-click="Guardar(Nuevo);Crear=false;" class="btn btn-primary">{{CategoriasViewModel.Idioma.Save}}</button>
+</div>
