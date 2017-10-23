@@ -23,11 +23,143 @@ namespace ASF.Data
     public class ProductDAC : DataAccessComponent
     {
         private LeatherGoodsEntities db = new LeatherGoodsEntities();
+
+        public Cart GetCartByIdClient(int id)
+        {
+            return db.Cart.OrderBy(i => i.Id).ToList().Last();
+        }
+
         public List<Product> GetAll()
         {
             return db.Product.ToList();
         }
 
+        public void AgregarAlCarrito(Entities.CartItem item, string user)
+        {
+            var CartItem = new Data.CartItem();
+
+            var UserId = db.AspNetUsers.Where(i => i.Email == user).FirstOrDefault().Id;
+
+            CartItem.CartId = db.Cart.Where(k=> k.IdUsuario == UserId).OrderBy(i => i.Id).ToList().Last().Id;
+
+            CartItem.Price = item.Price;
+            CartItem.ProductId = item.ProductId;
+            CartItem.Quantity = item.Quantity;
+
+            CartItem.ChangedOn = DateTime.Now;
+            CartItem.CreatedOn = DateTime.Now;
+
+            db.CartItem.Add(CartItem);
+
+            db.SaveChanges();
+        }
+
+        public void ConfirmarCarrito(string user)
+        {
+            var UserId = db.AspNetUsers.Where(i => i.Email == user).FirstOrDefault().Id;
+
+            var Carrito = db.Cart.Where(i => i.IdUsuario == UserId).FirstOrDefault();
+
+            var idcliente = db.Client.Where(i => i.AspNetUsers == UserId).First().Id;
+
+            OrderNumber ordernumber = AgregarNuevoNumeroOrden(idcliente);
+            double total = ObtenerTotal(Carrito);
+            Order order = AgregarOrden(Carrito, idcliente, ordernumber, total);
+
+            AgregarDetalleOrden(Carrito, order);
+            GenerarNuevoCarritoUsuario(UserId);
+        }
+
+        private void GenerarNuevoCarritoUsuario(string UserId)
+        {
+            db.Cart.Add(
+                new Cart()
+                {
+                    CartDate = DateTime.Now,
+                    ChangedBy = null,
+                    ChangedOn = DateTime.Now,
+                    CreatedBy = null,
+                    CreatedOn = DateTime.Now,
+                    IdUsuario = UserId,
+                    ItemCount = 0,
+                }
+                );
+            db.SaveChanges();
+        }
+
+        private void AgregarDetalleOrden(Cart Carrito, Order order)
+        {
+            var detalles = new List<OrderDetail>();
+            foreach (var item in Carrito.CartItem)
+            {
+                OrderDetail detalle = new OrderDetail();
+                detalle.ChangedBy = 0;
+                detalle.ChangedOn = DateTime.Now;
+                detalle.CreatedBy = 0;
+                detalle.CreatedOn = DateTime.Now;
+                detalle.Price = item.Price;
+                detalle.ProductId = item.ProductId;
+                detalle.Quantity = item.Quantity;
+                detalle.OrderId = order.Id;
+                detalles.Add(detalle);
+            }
+
+            db.OrderDetail.AddRange(detalles);
+
+            db.SaveChanges();
+        }
+
+        private Order AgregarOrden(Cart Carrito, int idcliente, OrderNumber ordernumber, double total)
+        {
+            var order = new Order()
+            {
+                ChangedBy = null,
+                ChangedOn = DateTime.Now,
+                CreatedBy = null,
+                CreatedOn = DateTime.Now,
+                ItemCount = Carrito.CartItem.Count(),
+                ClientId = idcliente,
+                OrderDate = DateTime.Now,
+                OrderNumber = ordernumber.Id,
+                TotalPrice = total,
+                State = null,
+                Client = null,
+                OrderDetail = null,
+                Rowid = null
+            };
+            db.Order.Add(order);
+
+            db.SaveChanges();
+            return order;
+        }
+
+        private static double ObtenerTotal(Cart Carrito)
+        {
+            double total = 0;
+            foreach (var item in Carrito.CartItem)
+            {
+                total = total + (item.Price * item.Quantity);
+            }
+
+            return total;
+        }
+
+        private OrderNumber AgregarNuevoNumeroOrden(int idcliente)
+        {
+            var ordernumber = new OrderNumber()
+            {
+                Number = (db.Order.Where(i => i.ClientId == idcliente).Count() + 1),
+                ChangedBy = 0,
+                ChangedOn = DateTime.Now,
+                CreatedBy = 0,
+                CreatedOn = DateTime.Now
+            };
+
+            db.OrderNumber.Add(ordernumber);
+
+            db.SaveChanges();
+            return ordernumber;
+        }
     }
 }
 

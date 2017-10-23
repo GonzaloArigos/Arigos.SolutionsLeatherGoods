@@ -2,6 +2,7 @@
 using ASF.UI.Process;
 using ASF.UI.WbSite.Models;
 using ASF.UI.WbSite.Services.Cache;
+using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace ASF.UI.WbSite.Controllers
 {
     public class ProductController : Controller
     {
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
         // GET: Product
         public ActionResult Index()
         {
@@ -38,6 +41,46 @@ namespace ASF.UI.WbSite.Controllers
                                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                 });
 
+        }
+
+        public string GetCartByIdClient(int id)
+        {
+            Process.ProductProcess process = new Process.ProductProcess();
+            Cart Carrito = process.GetCartByIdClient(1).Cart;
+            return JsonConvert.SerializeObject(Carrito, Formatting.None,
+                    new JsonSerializerSettings()
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    });
+        }
+
+        [HttpPost]
+        public void AgregarAlCarrito(object item)
+        {
+            Process.ProductProcess process = new Process.ProductProcess();
+            CartItem Item = Newtonsoft.Json.JsonConvert.DeserializeObject<CartItem>(item.ToString());
+            var user = User.Identity.Name;
+            process.AgregarAlCarrito(Item,user);
+        }
+
+        [HttpPost]
+        public void ConfirmarCarrito()
+        {
+            Process.ProductProcess process = new Process.ProductProcess();
+            var user = User.Identity.Name;
+            process.ConfirmarCarrito(user);
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
         }
     }
 }

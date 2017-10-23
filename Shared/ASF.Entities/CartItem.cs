@@ -58,6 +58,10 @@ namespace ASF.Entities
         [DisplayName("Quantity")]
         public int Quantity { get; set; }
 
+
+        [DataMember]
+        [DisplayName("Product")]
+        public Product Product { get; set; }
         /// <summary>
         /// 
         /// </summary>

@@ -86,6 +86,10 @@ namespace ASF.Entities
         [DisplayName("Changed By")]
         public int? ChangedBy { get; set; }
 
-        
+        [DataMember]
+        [DisplayName("Cart Item")]
+        public ICollection<CartItem> CartItem { get; set; }
+
+
     }
 }

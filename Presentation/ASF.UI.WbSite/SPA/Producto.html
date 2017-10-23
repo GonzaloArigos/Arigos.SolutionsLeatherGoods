@@ -1,73 +1,50 @@
-﻿<div class="md-toolbar-tools">
-
-    <h2><span class="glyphicon glyphicon-edit"></span> {{ProductoViewModel.Idioma.Producto}}</h2>
-
+﻿<div id="left" class="md-toolbar-tools">
+    <h2><span class="glyphicon glyphicon-edit"></span> {{ProductoViewModel.Idioma.Producto}}</h2>  
 </div>
 
-<!--<div ng-show="!Crear" class="table-responsive">
-    <button ng-click="Crear=true;" class="btn btn-success">{{ProductoViewModel.Idioma.New}}</button>
+<div>
+    <md-button ng-click="dialogVerCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Ver carrito (5)</md-button>
     <br />
     <br />
-    <table class="table table-condensed shortMargin">
-        <tr>
-            <th>{{ProductoViewModel.Idioma.Title}}</th>
-            <th>{{ProductoViewModel.Idioma.Description}}</th>
-            <th>{{ProductoViewModel.Idioma.Price}}</th>
-            <th>{{ProductoViewModel.Idioma.QuantitySold}}</th>
-        </tr>
-        <tr ng-repeat="x in ProductoViewModel.Productos">
-            <td>
+</div>
 
-                <p ng-show="!x.Editar">{{x.Title}}</p>
-                <input class="form-control" ng-show="x.Editar" type="text" value="{{x.Title}}" ng-model="x.Title" />
-            </td>
-            <td>
-                <p ng-show="!x.Editar">{{x.Description}}</p>
-                <input class="form-control" ng-show="x.Editar" type="text" value="{{x.Description}}" ng-model="x.Description" />
-
-            </td>
-            <td>
-                <p ng-show="!x.Editar">{{x.Price}}</p>
-                <input class="form-control" ng-show="x.Editar" type="text" value="{{x.Price}}" ng-model="x.Price" />
-
-            </td>
-            <td>
-
-                {{x.QuantitySold}}
-
-            </td>
-            <td>
-                <button ng-show="!x.Editar" ng-click="x.Editar = true" class="btn" type="button"><span class="glyphicon glyphicon-edit"></span></button>
-                <button ng-show="x.Editar == true" ng-click="x.Editar = false; Editar(x)" class="btn btn-black" type="button"><span class="glyphicon glyphicon-ok"></span></button>
-
-                <button ng-click="Delete(x.Id)" class="btn" type="button"><span class="glyphicon glyphicon-remove"></span></button>
-            </td>
-        </tr>
-    </table>
-</div>-->
 
 <div class="container-fluid">
+
     <div class="row">
         <div  class="col-md-12">
             <div class="row">
+
                 <div ng-repeat="x in ProductoViewModel.Productos" class="col-md-4">
-                    <div class="thumbnail">
-                        <img width="300" height="300" alt="Bootstrap Thumbnail First" src="../Images/product.png" />
-                        <div class="caption">
-                            <h3>                             
-                               {{x.Title}}
-                            </h3>
-                            <p>
-                               {{x.Description}}
-                            </p>
-                            <p>
-                              {{ProductoViewModel.Idioma.Price}} : {{x.Price}}
-                                <br />
-                              {{ProductoViewModel.Idioma.QuantitySold}} :  {{x.QuantitySold}}
-                            </p>
+                    <div flex-xs flex-gt-xs="200" layout="column">
+                        <md-card style="height:500px">
+                            <img style="height:240px;width:280px;" src="../Images/{{x.Image}}" />
+
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline">{{x.Title}}</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content>
+                                <p>
+                                    {{x.Description}}
+                                </p>
+                                <p>
+                                    {{ProductoViewModel.Idioma.Price}} : {{x.Price}}
+                                </p>
+                                <p>
+                                    {{ProductoViewModel.Idioma.QuantitySold}} :  {{x.QuantitySold}}
+                                </p>
+                            </md-card-content>
+                            <md-card-actions layout="row" layout-align="end center">
+                                <md-button ng-click="dialogVerProducto(x)" class="md-raised md-primary"><span class="glyphicon glyphicon-open"></span> {{ProductoViewModel.Idioma.SeeDetails}}</md-button>
+                                <!--<md-button>Action 2</md-button>-->
+                            </md-card-actions>
+                        </md-card>
                         </div>
+
+
                     </div>
-                </div>
              </div>
         </div>
     </div>

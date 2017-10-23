@@ -29,7 +29,6 @@ namespace ASF.Data
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Cart> Cart { get; set; }
         public virtual DbSet<CartItem> CartItem { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Client> Client { get; set; }
@@ -45,5 +44,6 @@ namespace ASF.Data
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<Rating> Rating { get; set; }
         public virtual DbSet<Setting> Setting { get; set; }
+        public virtual DbSet<Cart> Cart { get; set; }
     }
 }

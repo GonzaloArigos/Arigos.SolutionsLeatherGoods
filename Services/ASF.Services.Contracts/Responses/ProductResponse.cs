@@ -13,4 +13,10 @@ namespace ASF.Services.Contracts.Responses
         [DataMember]
        public List<Product> Productos { get; set; }
     }
+
+    public class CartResponse
+    {
+        [DataMember]
+        public Cart Cart { get; set; }
+    }
 }

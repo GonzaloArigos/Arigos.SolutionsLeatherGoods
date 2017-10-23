@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LeatherGoodsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LeatherGoodsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -61,7 +61,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Cookie" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="IdUsuario" Type="nvarchar" MaxLength="128" />
           <Property Name="CartDate" Type="datetime" Nullable="false" />
           <Property Name="ItemCount" Type="int" Nullable="false" />
           <Property Name="Rowid" Type="uniqueidentifier" />
@@ -287,6 +287,18 @@
           <Property Name="ChangedOn" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="ChangedBy" Type="int" />
         </EntityType>
+        <Association Name="FK_CartItem_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CARTITEM_REFERENCE_CART">
           <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
           <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
@@ -509,6 +521,10 @@
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rating" EntityType="Self.Rating" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Setting" EntityType="Self.Setting" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CartItem_Product" Association="Self.FK_CartItem_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
           <AssociationSet Name="FK_CARTITEM_REFERENCE_CART" Association="Self.FK_CARTITEM_REFERENCE_CART">
             <End Role="Cart" EntitySet="Cart" />
             <End Role="CartItem" EntitySet="CartItem" />
@@ -574,8 +590,7 @@
             <End Role="Rating" EntitySet="Rating" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LeatherGoodsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -628,21 +643,6 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
-        <EntityType Name="Cart">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Cookie" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ItemCount" Type="Int32" Nullable="false" />
-          <Property Name="Rowid" Type="Guid" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ChangedBy" Type="Int32" />
-          <NavigationProperty Name="CartItem" Relationship="Self.FK_CARTITEM_REFERENCE_CART" FromRole="Cart" ToRole="CartItem" />
-        </EntityType>
         <EntityType Name="CartItem">
           <Key>
             <PropertyRef Name="Id" />
@@ -656,7 +656,8 @@
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedBy" Type="Int32" />
-          <NavigationProperty Name="Cart" Relationship="Self.FK_CARTITEM_REFERENCE_CART" FromRole="CartItem" ToRole="Cart" />
+          <NavigationProperty Name="Product" Relationship="LeatherGoodsModel.FK_CartItem_Product" FromRole="CartItem" ToRole="Product" />
+          <NavigationProperty Name="Cart" Relationship="LeatherGoodsModel.FK_CARTITEM_REFERENCE_CART" FromRole="CartItem" ToRole="Cart" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -842,6 +843,7 @@
           <NavigationProperty Name="Dealer" Relationship="Self.FK_PRODUCT_REFERENCE_Dealer" FromRole="Product" ToRole="Dealer" />
           <NavigationProperty Name="OrderDetail" Relationship="Self.FK_ORDERDET_REFERENCE_PRODUCT" FromRole="Product" ToRole="OrderDetail" />
           <NavigationProperty Name="Rating" Relationship="Self.FK_RATING_REFERENCE_PRODUCT" FromRole="Product" ToRole="Rating" />
+          <NavigationProperty Name="CartItem" Relationship="LeatherGoodsModel.FK_CartItem_Product" FromRole="Product" ToRole="CartItem" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -908,18 +910,6 @@
             </Principal>
             <Dependent Role="AspNetUserLogins">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CARTITEM_REFERENCE_CART">
-          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
-          <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cart">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CartItem">
-              <PropertyRef Name="CartId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1064,7 +1054,6 @@
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
-          <EntitySet Name="Cart" EntityType="Self.Cart" />
           <EntitySet Name="CartItem" EntityType="Self.CartItem" />
           <EntitySet Name="Category" EntityType="Self.Category" />
           <EntitySet Name="Client" EntityType="Self.Client" />
@@ -1087,10 +1076,6 @@
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CARTITEM_REFERENCE_CART" Association="Self.FK_CARTITEM_REFERENCE_CART">
-            <End Role="Cart" EntitySet="Cart" />
-            <End Role="CartItem" EntitySet="CartItem" />
           </AssociationSet>
           <AssociationSet Name="FK_DEALER_REFERENCE_CATEGORY" Association="Self.FK_DEALER_REFERENCE_CATEGORY">
             <End Role="Category" EntitySet="Category" />
@@ -1140,7 +1125,55 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_CartItem_Product" Association="LeatherGoodsModel.FK_CartItem_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
+          <EntitySet Name="Cart" EntityType="LeatherGoodsModel.Cart" />
+          <AssociationSet Name="FK_CARTITEM_REFERENCE_CART" Association="LeatherGoodsModel.FK_CARTITEM_REFERENCE_CART">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_CartItem_Product">
+          <End Type="LeatherGoodsModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="LeatherGoodsModel.CartItem" Role="CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdUsuario" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ItemCount" Type="Int32" Nullable="false" />
+          <Property Name="Rowid" Type="Guid" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ChangedBy" Type="Int32" />
+          <NavigationProperty Name="CartItem" Relationship="LeatherGoodsModel.FK_CARTITEM_REFERENCE_CART" FromRole="Cart" ToRole="CartItem" />
+        </EntityType>
+        <Association Name="FK_CARTITEM_REFERENCE_CART">
+          <End Type="LeatherGoodsModel.Cart" Role="Cart" Multiplicity="1" />
+          <End Type="LeatherGoodsModel.CartItem" Role="CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="CartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1189,21 +1222,6 @@
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cart">
-            <EntityTypeMapping TypeName="LeatherGoodsModel.Cart">
-              <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Cookie" ColumnName="Cookie" />
-                <ScalarProperty Name="CartDate" ColumnName="CartDate" />
-                <ScalarProperty Name="ItemCount" ColumnName="ItemCount" />
-                <ScalarProperty Name="Rowid" ColumnName="Rowid" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ChangedOn" ColumnName="ChangedOn" />
-                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1447,6 +1465,21 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Cart">
+            <EntityTypeMapping TypeName="LeatherGoodsModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+                <ScalarProperty Name="ChangedOn" ColumnName="ChangedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Rowid" ColumnName="Rowid" />
+                <ScalarProperty Name="ItemCount" ColumnName="ItemCount" />
+                <ScalarProperty Name="CartDate" ColumnName="CartDate" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -19,6 +19,7 @@ namespace ASF.Data
         {
             this.OrderDetail = new HashSet<OrderDetail>();
             this.Rating = new HashSet<Rating>();
+            this.CartItem = new HashSet<CartItem>();
         }
     
         public int Id { get; set; }
@@ -40,5 +41,7 @@ namespace ASF.Data
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rating> Rating { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CartItem> CartItem { get; set; }
     }
 }

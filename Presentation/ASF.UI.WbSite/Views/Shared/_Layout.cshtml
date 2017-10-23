@@ -103,6 +103,7 @@
 
     @* Custom Fonts - If you are using custom fonts. Consider using the Google Web Fonts Loader in async mode.
         See https://github.com/typekit/webfontloader. *@
+    <link href="~/Content/angular-material.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     <meta name="x-font-awesome-stylesheet-fallback-test" class="fa">
     @Styles.Render("~/Content/fa")
@@ -145,7 +146,7 @@
 
 
     @* OpenSearch - (See http://www.hanselman.com/blog/CommentView.aspx?guid=50cc95b1-c043-451f-9bc2-696dc564766d and http://www.opensearch.org) *@
-    <link href="@Url.RouteUrl(HomeControllerRoute.GetOpenSearchXml).TrimEnd('/')" rel="search" title="Architecture Solutions Foundation Search" type="application/opensearchdescription+xml">
+    <link href="@Url.RouteUrl(HomeControllerRoute.GetOpenSearchXml).TrimEnd('/')" rel="search" title="E-Commerce" type="application/opensearchdescription+xml">
 
 
     @* You can use the head section to render additional meta tags. *@
@@ -164,7 +165,7 @@
                     <span aria-hidden="true" class="icon-bar"></span>
                     <span aria-hidden="true" class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" role="banner" href="@Url.RouteUrl(HomeControllerRoute.GetIndex)"><span class="fa fa-star"></span> @Application.Name</a>
+                <a class="navbar-brand" role="banner" href="@Url.RouteUrl(HomeControllerRoute.GetIndex)"><span class="fa fa-star"></span> E-Commerce</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -208,6 +209,7 @@
     <script src="~/Scripts/angular-aria.js"></script>
     <script src="~/Scripts/angular-messages.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
+    <script src="~/Scripts/angular-material.min.js"></script>
 
     <script src="~/SPA/Controllers/AppController.js"></script>
     <script src="~/SPA/Controllers/CategoryController.js"></script>

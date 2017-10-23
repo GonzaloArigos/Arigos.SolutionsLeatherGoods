@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\ConfirmarCarritoRequest.cs" />
+    <Compile Include="Requests\AgregarAlCarritoRequest.cs" />
     <Compile Include="Responses\AllResponse.cs" />
     <Compile Include="Responses\FindResponse.cs" />
     <Compile Include="Responses\ProductResponse.cs" />
@@ -53,9 +55,7 @@
       <Name>ASF.Entities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Requests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

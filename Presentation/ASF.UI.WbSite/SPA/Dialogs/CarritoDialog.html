@@ -1,0 +1,74 @@
+﻿<md-dialog style="width:30%;">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <span class="glyphicon glyphicon-shopping-cart"></span><h1>  Carrito de compras</h1>
+
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content ng-show="!Procesar">
+        <md-list flex>
+            <md-subheader class="md-no-sticky">Productos</md-subheader>
+            <md-list-item ng-repeat="x in Carrito.CartItem" class="md-3-line md-long-text">
+                <div class="md-list-item-text">
+                    <h3>{{x.Product.Title}} X{{x.Quantity}}</h3>
+                    <h3>Precio unitario: {{x.Price}}</h3>
+                    <h4>$ARG {{x.Price * x.Quantity}}</h4>
+                </div>
+                <md-button class="md-warn"><span class="glyphicon glyphicon-remove"></span></md-button>
+            </md-list-item>
+
+            <md-list-item ng-show="NohayItems == true" class="md-3-line md-long-text">
+                <div class="md-list-item-text">
+                    <h3>No hay items en su carrito!</h3>
+                </div>
+            </md-list-item>
+                <md-divider></md-divider>
+
+</md-list>
+    </md-dialog-content>
+
+    <md-dialog-content ng-show="Procesar && !CompraFinalizada">
+        <md-list-item class="md-3-line md-long-text">
+            <h1><span class="glyphicon glyphicon-info-sign"></span> Resumen de compra:</h1>
+        </md-list-item>
+        <md-list-item class="md-3-line md-long-text">
+            <h4><span class="glyphicon glyphicon-gift"></span> Cantidad de items en el carrito: {{CantidadItems}}</h4>
+        </md-list-item>
+        <md-list-item class="md-3-line md-long-text">
+            <h4><span class="glyphicon glyphicon-gift"></span> Cantidad de productos a comprar: {{CantidadProductos}}</h4>
+        </md-list-item>
+        <md-list-item class="md-3-line md-long-text">
+            <h4><span class="glyphicon glyphicon-flag"></span> Impuestos por ley: {{Tax}}</h4>
+        </md-list-item>
+        <md-list-item class="md-3-line md-long-text">
+            <h4><span class="glyphicon glyphicon-euro"></span> Importe de impuestos: ${{ImporteTax}}</h4>
+        </md-list-item>
+        <md-list-item class="md-3-line md-long-text">
+            <h4><span class="glyphicon glyphicon-euro"></span> Importe sin impuestos: ${{ImporteSinImpuestos}}</h4>
+        </md-list-item>
+        <md-list-item class="md-3-line md-long-text">
+            <h4><span class="glyphicon glyphicon-euro"></span> Total a pagar: ${{TotalPagar}}</h4>
+        </md-list-item>
+
+    </md-dialog-content>
+
+    <md-dialog-content ng-show="CompraFinalizada && Procesar">
+        <h2>Orden generada correctamente!</h2>
+        <h3>Podrá ver el detalle de sus órdenes en la solapa "Ordernes".</h3>
+        <h4>Se ha creado un nuevo carrito de compras!</h4>
+        <img src="../../Images/OK.jpg" />
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+
+        <md-button ng-show="!Procesar && !NohayItems" ng-click="ElaborarResumenPago()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span>Procesar orden</md-button>
+        <md-button ng-show="Procesar && !CompraFinalizada && !NohayItems" ng-click="ConfirmarCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span>Confirmar</md-button>
+    </md-dialog-actions>
+</md-dialog>
