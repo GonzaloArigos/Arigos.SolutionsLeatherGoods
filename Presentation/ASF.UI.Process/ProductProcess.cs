@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using ASF.Entities;
 using ASF.Services.Contracts.Responses;
 using ASF.Services.Contracts.Requests;
+using Newtonsoft.Json;
 
 namespace ASF.UI.Process
 {
     public class ProductProcess : ProcessComponent
     {
-        public List<Product> GetAll()
+        public ProductResponse GetAll(int skip,int take)
         {
-            var response = HttpGet<ProductResponse>("rest/Product/GetAll", new Dictionary<string, object>(), MediaType.Json);
-            return response.Productos;
+
+            var dic = new Dictionary<string, object>();
+            dic.Add("skip", skip);
+            dic.Add("take", take);
+
+            var response = HttpGet<ProductResponse>("rest/Product/GetAll", dic, MediaType.Json);
+            return response;
         }
 
         public CartResponse GetCartByIdClient(int id)
@@ -36,6 +42,15 @@ namespace ASF.UI.Process
             ConfirmarCarritoRequest request = new ConfirmarCarritoRequest();
             request.User = user;
             HttpPost<ConfirmarCarritoRequest>("rest/Product/ConfirmarCarrito", request, MediaType.Json);
+        }
+
+        public void PublicarProducto(Product producto)
+        {
+            PublicarProductoRequest request = new PublicarProductoRequest();
+            request.Producto = producto;
+
+            HttpPost<PublicarProductoRequest>("rest/Product/PublicarProducto", request, MediaType.Json);
+
         }
     }
 

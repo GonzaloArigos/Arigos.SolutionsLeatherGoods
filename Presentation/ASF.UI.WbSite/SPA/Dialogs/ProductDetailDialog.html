@@ -14,7 +14,7 @@
     <md-dialog-content ng-show="!agregarCarrito && !OK">
         <md-list flex>
             <md-subheader class="md-no-sticky">
-                <img class=".img-circle" style="text-align:center;" width="150" height="150" alt="Bootstrap Thumbnail First" src="../Images/{{Producto.Image}}" />
+                <img class=".img-circle" style="text-align:center;" width="150" height="150" alt="Bootstrap Thumbnail First" src="data:{{Producto.Image.ContentType}};base64, {{Producto.Image.Archivo}}"" />
                 <h3>
                     <span style="color:yellow">
                         <span class="glyphicon glyphicon-star"></span>

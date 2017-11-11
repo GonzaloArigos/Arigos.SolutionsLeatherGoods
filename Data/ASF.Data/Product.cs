@@ -17,16 +17,16 @@ namespace ASF.Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
+            this.CartItem = new HashSet<CartItem>();
             this.OrderDetail = new HashSet<OrderDetail>();
             this.Rating = new HashSet<Rating>();
-            this.CartItem = new HashSet<CartItem>();
         }
     
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public int DealerId { get; set; }
-        public string Image { get; set; }
+        public int IdImage { get; set; }
         public double Price { get; set; }
         public int QuantitySold { get; set; }
         public double AvgStars { get; set; }
@@ -36,12 +36,12 @@ namespace ASF.Data
         public System.DateTime ChangedOn { get; set; }
         public Nullable<int> ChangedBy { get; set; }
     
-        public virtual Dealer Dealer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CartItem> CartItem { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Rating> Rating { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CartItem> CartItem { get; set; }
+        public virtual Imagenes Imagenes { get; set; }
     }
 }

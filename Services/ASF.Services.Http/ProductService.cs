@@ -40,12 +40,22 @@ namespace ASF.Services.Http
 
         [HttpGet]
         [Route("GetAll")]
-        public ProductResponse GetAll()
+        public ProductResponse GetAll(int take, int skip)
         {
             try
             {
                 var response = new ProductResponse();
-                response.Productos = ProductBusiness.GetAll();
+                response.Productos = ProductBusiness.GetAll(take, skip);
+                response.Paginas = ProductBusiness.CountProductos(take) + 1;
+                if (skip > 0 && take> 0)
+                {
+                    response.PaginaActual = (int)(skip / take) +1;
+                }
+                else
+                {
+                    response.PaginaActual = 1;
+                }
+
                 return response;
             }
             catch (Exception ex)
@@ -66,7 +76,30 @@ namespace ASF.Services.Http
         {
             try
             {
-                ProductBusiness.AgregarAlCarrito(Request.Item,Request.User);
+                ProductBusiness.AgregarAlCarrito(Request.Item, Request.User);
+            }
+            catch (Exception ex)
+            {
+                var httpError = new HttpResponseMessage()
+                {
+                    StatusCode = (HttpStatusCode)422,
+                    ReasonPhrase = ex.Message
+                };
+
+                throw new HttpResponseException(httpError);
+            }
+        }
+
+        [HttpPost]
+        [Route("PublicarProducto")]
+        public void PublicarProducto(PublicarProductoRequest request)
+        {
+            try
+            {
+
+                ProductBusiness.PublicarProducto(request.Producto);
+
+
             }
             catch (Exception ex)
             {

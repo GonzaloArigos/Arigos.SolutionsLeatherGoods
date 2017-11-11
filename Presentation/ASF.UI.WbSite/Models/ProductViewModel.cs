@@ -9,5 +9,7 @@ namespace ASF.UI.WbSite.Models
     {
         public Dictionary<string, string> Idioma { get; set; }
         public IEnumerable<Product> Productos { get; set; }
+        public int Paginas { get; set; }
+        public int Take { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace ASF.Data
         public System.DateTime ChangedOn { get; set; }
         public Nullable<int> ChangedBy { get; set; }
     
-        public virtual Product Product { get; set; }
         public virtual Cart Cart { get; set; }
+        public virtual Product Product { get; set; }
     }
 }

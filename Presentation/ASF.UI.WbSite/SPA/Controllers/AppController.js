@@ -1,4 +1,4 @@
-﻿var app = angular.module("app", ['ngRoute', 'ngMaterial']);
+﻿var app = angular.module("app", ['ngRoute', 'ngMaterial', 'ngFileUpload']);
 
 // =====================================
 // configure the route navigation
@@ -18,6 +18,11 @@ app.config(function ($routeProvider, $locationProvider) {
             templateUrl: 'SPA/Category.html',
             controller: 'CategoryController'
         })
+        .when('/AddProduct',
+        {
+            templateUrl: 'SPA/AddProduct.html',
+            controller: 'AddProductController'
+        })
         .when('/Product',
         {
             templateUrl: 'SPA/Producto.html',
@@ -33,9 +38,8 @@ app.config(function ($routeProvider, $locationProvider) {
 });
 
 // Home controller
-app.controller("HomeController", function ($scope, $location, LanguageService) {
+app.controller("HomeController", function ($scope, $location, LanguageService, ProductService) {
 
-    $scope.Hola = "sdaasdasdsd";
     $scope.culture = "";
 
     $scope.CambiarIdioma = function (culture) {
@@ -48,4 +52,22 @@ app.controller("HomeController", function ($scope, $location, LanguageService) {
 
             });
     }
+
+    var all = function () {
+        ProductService.GetAll(0).then(
+            function (d) {
+                $scope.ProductoViewModel = d.data;
+
+                for (var i = 1; i <= $scope.ProductoViewModel.Paginas; i++) {
+                    $scope.Paginas.push(i);
+                }
+            },
+            function (error) {
+
+
+            });
+    }
+
+    all();
+
 });

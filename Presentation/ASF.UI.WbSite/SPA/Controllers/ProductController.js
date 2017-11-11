@@ -3,12 +3,16 @@
     $scope.Crear = false;
     $scope.Nuevo = {};
     $scope.agregarCarrito = false;
-
-
+    $scope.Skip = 0;
+    $scope.Paginas = [];
     var all = function () {
-        ProductService.GetAll().then(
+        ProductService.GetAll($scope.Skip).then(
             function (d) {
                 $scope.ProductoViewModel = d.data;
+                
+                for (var i = 1; i <= $scope.ProductoViewModel.Paginas; i++) {
+                    $scope.Paginas.push(i);
+                }
             },
             function (error) {
 
@@ -17,6 +21,29 @@
     }
 
     all();
+
+    $scope.VerPagina = function (pagina) {
+        if (pagina == 1) {
+            $scope.Skip = 0;
+        } else {
+            $scope.Skip = ($scope.ProductoViewModel.Take * pagina) - $scope.ProductoViewModel.Take;
+        }
+        all();
+    }
+
+    $scope.VerMas = function () {
+        $scope.Skip = $scope.Skip + $scope.ProductoViewModel.Take;
+        all();
+    }
+
+    $scope.VerMenos = function () {
+
+        if ($scope.Skip > 0) {
+            $scope.Skip = $scope.Skip - $scope.ProductoViewModel.Take;
+            all();
+        }
+
+    }
 
     $scope.Delete = function (id) {
         ProductService.Delete(id).then(

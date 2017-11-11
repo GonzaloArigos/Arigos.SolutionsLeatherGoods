@@ -161,6 +161,15 @@
           <Property Name="ChangedBy" Type="int" />
           <Property Name="ChangedOn" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Imagenes">
+          <Key>
+            <PropertyRef Name="IdImage" />
+          </Key>
+          <Property Name="IdImage" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Archivo" Type="varbinary(max)" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="ContentType" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Language">
           <Key>
             <PropertyRef Name="Id" />
@@ -239,7 +248,7 @@
           <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="250" />
           <Property Name="DealerId" Type="int" Nullable="false" />
-          <Property Name="Image" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="IdImage" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="QuantitySold" Type="int" Nullable="false" />
           <Property Name="AvgStars" Type="float" Nullable="false" />
@@ -463,15 +472,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PRODUCT_REFERENCE_Dealer">
-          <End Role="Dealer" Type="Self.Dealer" Multiplicity="1" />
+        <Association Name="FK_Product_Imagenes">
+          <End Role="Imagenes" Type="Self.Imagenes" Multiplicity="1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Dealer">
-              <PropertyRef Name="Id" />
+            <Principal Role="Imagenes">
+              <PropertyRef Name="IdImage" />
             </Principal>
             <Dependent Role="Product">
-              <PropertyRef Name="DealerId" />
+              <PropertyRef Name="IdImage" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -512,6 +521,7 @@
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Dealer" EntityType="Self.Dealer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Error" EntityType="Self.Error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Imagenes" EntityType="Self.Imagenes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Language" EntityType="Self.Language" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleResourceKey" EntityType="Self.LocaleResourceKey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocaleStringResource" EntityType="Self.LocaleStringResource" Schema="dbo" store:Type="Tables" />
@@ -577,8 +587,8 @@
             <End Role="Product" EntitySet="Product" />
             <End Role="OrderDetail" EntitySet="OrderDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_PRODUCT_REFERENCE_Dealer" Association="Self.FK_PRODUCT_REFERENCE_Dealer">
-            <End Role="Dealer" EntitySet="Dealer" />
+          <AssociationSet Name="FK_Product_Imagenes" Association="Self.FK_Product_Imagenes">
+            <End Role="Imagenes" EntitySet="Imagenes" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
           <AssociationSet Name="FK_RATING_REFERENCE_Client" Association="Self.FK_RATING_REFERENCE_Client">
@@ -656,8 +666,8 @@
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedBy" Type="Int32" />
-          <NavigationProperty Name="Product" Relationship="LeatherGoodsModel.FK_CartItem_Product" FromRole="CartItem" ToRole="Product" />
           <NavigationProperty Name="Cart" Relationship="LeatherGoodsModel.FK_CARTITEM_REFERENCE_CART" FromRole="CartItem" ToRole="Cart" />
+          <NavigationProperty Name="Product" Relationship="LeatherGoodsModel.FK_CartItem_Product" FromRole="CartItem" ToRole="Product" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -724,7 +734,6 @@
           <Property Name="ChangedBy" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="Self.FK_DEALER_REFERENCE_CATEGORY" FromRole="Dealer" ToRole="Category" />
           <NavigationProperty Name="Country" Relationship="Self.FK_DEALER_REFERENCE_COUNTRY" FromRole="Dealer" ToRole="Country" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_PRODUCT_REFERENCE_Dealer" FromRole="Dealer" ToRole="Product" />
         </EntityType>
         <EntityType Name="Error">
           <Key>
@@ -810,7 +819,7 @@
           <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedBy" Type="Int32" />
           <NavigationProperty Name="Order" Relationship="Self.FK_ORDERDET_REFERENCE_ORDER" FromRole="OrderDetail" ToRole="Order" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_ORDERDET_REFERENCE_PRODUCT" FromRole="OrderDetail" ToRole="Product" />
+          <NavigationProperty Name="Product" Relationship="LeatherGoodsModel.FK_ORDERDET_REFERENCE_PRODUCT" FromRole="OrderDetail" ToRole="Product" />
         </EntityType>
         <EntityType Name="OrderNumber">
           <Key>
@@ -822,28 +831,6 @@
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedBy" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="DealerId" Type="Int32" Nullable="false" />
-          <Property Name="Image" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Price" Type="Double" Nullable="false" />
-          <Property Name="QuantitySold" Type="Int32" Nullable="false" />
-          <Property Name="AvgStars" Type="Double" Nullable="false" />
-          <Property Name="Rowid" Type="Guid" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ChangedBy" Type="Int32" />
-          <NavigationProperty Name="Dealer" Relationship="Self.FK_PRODUCT_REFERENCE_Dealer" FromRole="Product" ToRole="Dealer" />
-          <NavigationProperty Name="OrderDetail" Relationship="Self.FK_ORDERDET_REFERENCE_PRODUCT" FromRole="Product" ToRole="OrderDetail" />
-          <NavigationProperty Name="Rating" Relationship="Self.FK_RATING_REFERENCE_PRODUCT" FromRole="Product" ToRole="Rating" />
-          <NavigationProperty Name="CartItem" Relationship="LeatherGoodsModel.FK_CartItem_Product" FromRole="Product" ToRole="CartItem" />
         </EntityType>
         <EntityType Name="Rating">
           <Key>
@@ -858,7 +845,7 @@
           <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ChangedBy" Type="Int32" />
           <NavigationProperty Name="Client" Relationship="Self.FK_RATING_REFERENCE_Client" FromRole="Rating" ToRole="Client" />
-          <NavigationProperty Name="Product" Relationship="Self.FK_RATING_REFERENCE_PRODUCT" FromRole="Rating" ToRole="Product" />
+          <NavigationProperty Name="Product" Relationship="LeatherGoodsModel.FK_RATING_REFERENCE_PRODUCT" FromRole="Rating" ToRole="Product" />
         </EntityType>
         <EntityType Name="Setting">
           <Key>
@@ -973,18 +960,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PRODUCT_REFERENCE_Dealer">
-          <End Role="Dealer" Type="Self.Dealer" Multiplicity="1" />
-          <End Role="Product" Type="Self.Product" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Dealer">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Product">
-              <PropertyRef Name="DealerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_LocaleStringResource_dbo_Language_Language_Id">
           <End Role="Language" Type="Self.Language" Multiplicity="1" />
           <End Role="LocaleStringResource" Type="Self.LocaleStringResource" Multiplicity="*" />
@@ -1021,30 +996,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ORDERDET_REFERENCE_PRODUCT">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="OrderDetail">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_RATING_REFERENCE_PRODUCT">
-          <End Role="Product" Type="Self.Product" Multiplicity="1" />
-          <End Role="Rating" Type="Self.Rating" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Rating">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="AspNetUserRoles">
           <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
@@ -1066,7 +1017,6 @@
           <EntitySet Name="Order" EntityType="Self.Order" />
           <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" />
           <EntitySet Name="OrderNumber" EntityType="Self.OrderNumber" />
-          <EntitySet Name="Product" EntityType="Self.Product" />
           <EntitySet Name="Rating" EntityType="Self.Rating" />
           <EntitySet Name="Setting" EntityType="Self.Setting" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -1097,10 +1047,6 @@
             <End Role="Country" EntitySet="Country" />
             <End Role="Dealer" EntitySet="Dealer" />
           </AssociationSet>
-          <AssociationSet Name="FK_PRODUCT_REFERENCE_Dealer" Association="Self.FK_PRODUCT_REFERENCE_Dealer">
-            <End Role="Dealer" EntitySet="Dealer" />
-            <End Role="Product" EntitySet="Product" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_LocaleStringResource_dbo_Language_Language_Id" Association="Self.FK_dbo_LocaleStringResource_dbo_Language_Language_Id">
             <End Role="Language" EntitySet="Language" />
             <End Role="LocaleStringResource" EntitySet="LocaleStringResource" />
@@ -1113,40 +1059,34 @@
             <End Role="Order" EntitySet="Order" />
             <End Role="OrderDetail" EntitySet="OrderDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_ORDERDET_REFERENCE_PRODUCT" Association="Self.FK_ORDERDET_REFERENCE_PRODUCT">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="OrderDetail" EntitySet="OrderDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RATING_REFERENCE_PRODUCT" Association="Self.FK_RATING_REFERENCE_PRODUCT">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="Rating" EntitySet="Rating" />
-          </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CartItem_Product" Association="LeatherGoodsModel.FK_CartItem_Product">
-            <End Role="Product" EntitySet="Product" />
-            <End Role="CartItem" EntitySet="CartItem" />
           </AssociationSet>
           <EntitySet Name="Cart" EntityType="LeatherGoodsModel.Cart" />
           <AssociationSet Name="FK_CARTITEM_REFERENCE_CART" Association="LeatherGoodsModel.FK_CARTITEM_REFERENCE_CART">
             <End Role="Cart" EntitySet="Cart" />
             <End Role="CartItem" EntitySet="CartItem" />
           </AssociationSet>
+          <EntitySet Name="Product" EntityType="LeatherGoodsModel.Product" />
+          <AssociationSet Name="FK_CartItem_Product" Association="LeatherGoodsModel.FK_CartItem_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDERDET_REFERENCE_PRODUCT" Association="LeatherGoodsModel.FK_ORDERDET_REFERENCE_PRODUCT">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RATING_REFERENCE_PRODUCT" Association="LeatherGoodsModel.FK_RATING_REFERENCE_PRODUCT">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
+          <EntitySet Name="Imagenes" EntityType="LeatherGoodsModel.Imagenes" />
+          <AssociationSet Name="FK_Product_Imagenes" Association="LeatherGoodsModel.FK_Product_Imagenes">
+            <End Role="Imagenes" EntitySet="Imagenes" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_CartItem_Product">
-          <End Type="LeatherGoodsModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="LeatherGoodsModel.CartItem" Role="CartItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CartItem">
-              <PropertyRef Name="ProductId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Cart">
           <Key>
             <PropertyRef Name="Id" />
@@ -1171,6 +1111,86 @@
             </Principal>
             <Dependent Role="CartItem">
               <PropertyRef Name="CartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="DealerId" Type="Int32" Nullable="false" />
+          <Property Name="IdImage" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="QuantitySold" Type="Int32" Nullable="false" />
+          <Property Name="AvgStars" Type="Double" Nullable="false" />
+          <Property Name="Rowid" Type="Guid" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ChangedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ChangedBy" Type="Int32" />
+          <NavigationProperty Name="CartItem" Relationship="LeatherGoodsModel.FK_CartItem_Product" FromRole="Product" ToRole="CartItem" />
+          <NavigationProperty Name="OrderDetail" Relationship="LeatherGoodsModel.FK_ORDERDET_REFERENCE_PRODUCT" FromRole="Product" ToRole="OrderDetail" />
+          <NavigationProperty Name="Rating" Relationship="LeatherGoodsModel.FK_RATING_REFERENCE_PRODUCT" FromRole="Product" ToRole="Rating" />
+          <NavigationProperty Name="Imagenes" Relationship="LeatherGoodsModel.FK_Product_Imagenes" FromRole="Product" ToRole="Imagenes" />
+        </EntityType>
+        <Association Name="FK_CartItem_Product">
+          <End Type="LeatherGoodsModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="LeatherGoodsModel.CartItem" Role="CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDERDET_REFERENCE_PRODUCT">
+          <End Type="LeatherGoodsModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="LeatherGoodsModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RATING_REFERENCE_PRODUCT">
+          <End Type="LeatherGoodsModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="LeatherGoodsModel.Rating" Role="Rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Imagenes">
+          <Key>
+            <PropertyRef Name="IdImage" />
+          </Key>
+          <Property Name="IdImage" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Archivo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ContentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Product" Relationship="LeatherGoodsModel.FK_Product_Imagenes" FromRole="Imagenes" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Product_Imagenes">
+          <End Type="LeatherGoodsModel.Imagenes" Role="Imagenes" Multiplicity="1" />
+          <End Type="LeatherGoodsModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Imagenes">
+              <PropertyRef Name="IdImage" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="IdImage" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1398,25 +1418,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="LeatherGoodsModel.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DealerId" ColumnName="DealerId" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="QuantitySold" ColumnName="QuantitySold" />
-                <ScalarProperty Name="AvgStars" ColumnName="AvgStars" />
-                <ScalarProperty Name="Rowid" ColumnName="Rowid" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="ChangedOn" ColumnName="ChangedOn" />
-                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Rating">
             <EntityTypeMapping TypeName="LeatherGoodsModel.Rating">
               <MappingFragment StoreEntitySet="Rating">
@@ -1477,6 +1478,35 @@
                 <ScalarProperty Name="CartDate" ColumnName="CartDate" />
                 <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="LeatherGoodsModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+                <ScalarProperty Name="ChangedOn" ColumnName="ChangedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="Rowid" ColumnName="Rowid" />
+                <ScalarProperty Name="AvgStars" ColumnName="AvgStars" />
+                <ScalarProperty Name="QuantitySold" ColumnName="QuantitySold" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="IdImage" ColumnName="IdImage" />
+                <ScalarProperty Name="DealerId" ColumnName="DealerId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Imagenes">
+            <EntityTypeMapping TypeName="LeatherGoodsModel.Imagenes">
+              <MappingFragment StoreEntitySet="Imagenes">
+                <ScalarProperty Name="ContentType" ColumnName="ContentType" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="IdImage" ColumnName="IdImage" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

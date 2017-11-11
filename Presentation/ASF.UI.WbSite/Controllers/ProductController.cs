@@ -1,4 +1,5 @@
 ﻿using ASF.Entities;
+using ASF.Services.Contracts.Responses;
 using ASF.UI.Process;
 using ASF.UI.WbSite.Models;
 using ASF.UI.WbSite.Services.Cache;
@@ -6,6 +7,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,20 +30,28 @@ namespace ASF.UI.WbSite.Controllers
             var Language = DataCache.Instance.GetLang(culture);
             return Language;
         }
-        public string GetAll()
+        public string GetAll(int skip)
         {
+            int take = Convert.ToInt32(ConfigurationManager.AppSettings.Get("Take"));
             var lang = GetLang("EN-US");
             Process.ProductProcess process = new Process.ProductProcess();
-            List<Product> lista = process.GetAll();
+            ProductResponse lista = process.GetAll(skip,take);
             var model = new ProductViewModel();
-            model.Productos = lista;
+            model.Productos = lista.Productos;
             model.Idioma = lang;
+            model.Paginas = lista.Paginas;
+            model.Take = take;
             return JsonConvert.SerializeObject(model, Formatting.None,
                                 new JsonSerializerSettings()
                                 {
                                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                 });
 
+        }
+
+        public string GetName(string name)
+        {
+            return "AUTOCOMPLETE";
         }
 
         public string GetCartByIdClient(int id)
@@ -62,6 +73,52 @@ namespace ASF.UI.WbSite.Controllers
             var user = User.Identity.Name;
             process.AgregarAlCarrito(Item,user);
         }
+        [HttpPost]
+        public string VerFoto(HttpPostedFileBase file)
+        {
+            byte[] fileData = null;
+
+            using (var binaryReader = new BinaryReader(file.InputStream))
+            {
+                fileData = binaryReader.ReadBytes(file.ContentLength);
+            }
+            var Image = new Imagenes();
+            Image.Archivo = fileData;
+            Image.ContentType = file.ContentType;
+            Image.Nombre = file.FileName;
+            return JsonConvert.SerializeObject(Image, Formatting.None,
+                   new JsonSerializerSettings()
+                   {
+                       ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                   });
+        }
+
+
+        [HttpPost]
+        public void PublicarProducto(HttpPostedFileBase file, object product)
+        {
+            var p = (string[])product;
+            Product _prod = Newtonsoft.Json.JsonConvert.DeserializeObject<Product>(p[0].ToString());
+            byte[] fileData = null;
+
+            using (var binaryReader = new BinaryReader(file.InputStream))
+            {
+                fileData = binaryReader.ReadBytes(file.ContentLength);
+            }
+
+            Process.ProductProcess process = new Process.ProductProcess();
+
+            _prod.Image = new Imagenes();
+            _prod.Image.Archivo = fileData;
+            _prod.Image.ContentType = file.ContentType;
+            _prod.Image.Nombre = file.FileName;
+
+
+            process.PublicarProducto(_prod);
+
+     
+        }
+
 
         [HttpPost]
         public void ConfirmarCarrito()

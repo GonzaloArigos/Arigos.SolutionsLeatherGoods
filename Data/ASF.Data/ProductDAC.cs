@@ -29,9 +29,9 @@ namespace ASF.Data
             return db.Cart.OrderBy(i => i.Id).ToList().Last();
         }
 
-        public List<Product> GetAll()
+        public List<Product> GetAll(int take, int skip)
         {
-            return db.Product.ToList();
+            return db.Product.OrderBy(i => i.Id).Skip(skip).Take(take).ToList();
         }
 
         public void AgregarAlCarrito(Entities.CartItem item, string user)
@@ -54,6 +54,11 @@ namespace ASF.Data
             db.SaveChanges();
         }
 
+        public int CountProductos(int take)
+        {
+            return db.Product.Count();
+        }
+
         public void ConfirmarCarrito(string user)
         {
             var UserId = db.AspNetUsers.Where(i => i.Email == user).FirstOrDefault().Id;
@@ -68,6 +73,39 @@ namespace ASF.Data
 
             AgregarDetalleOrden(Carrito, order);
             GenerarNuevoCarritoUsuario(UserId);
+        }
+
+        public void PublicarProducto(ASF.Entities.Product producto)
+        {
+            try
+            {
+                var nuevoProducto = new Product()
+                {
+                    AvgStars = 0,
+                    ChangedBy = 1,
+                    ChangedOn = DateTime.Now,
+                    CreatedBy = 1,
+                    CreatedOn = DateTime.Now,
+                    Description = producto.Description,
+                    DealerId = 1,
+                    Price = producto.Price,
+                    Title = producto.Title,
+                    QuantitySold = 0,
+                    Imagenes = new Imagenes()
+                    {
+                        Archivo = producto.Image.Archivo,
+                        ContentType = producto.Image.ContentType,
+                        Nombre = producto.Image.Nombre
+                    }
+                };
+                db.Product.Add(nuevoProducto);
+                db.SaveChanges();
+            }
+            catch
+            {
+
+            }
+
         }
 
         private void GenerarNuevoCarritoUsuario(string UserId)

@@ -1,13 +1,16 @@
-﻿<div id="left" class="md-toolbar-tools">
-    <h2><span class="glyphicon glyphicon-edit"></span> {{ProductoViewModel.Idioma.Producto}}</h2>  
-</div>
+﻿<md-toolbar class="dxc-bar">
+    <div class="md-toolbar-tools">
+
+        <h2><span class="glyphicon glyphicon-edit"></span> {{ProductoViewModel.Idioma.Producto}}</h2>  
+
+    </div>
+</md-toolbar>
 
 <div>
-    <md-button ng-click="dialogVerCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Ver carrito (5)</md-button>
+    <md-button ng-click="dialogVerCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Ver carrito</md-button>
     <br />
     <br />
 </div>
-
 
 <div class="container-fluid">
 
@@ -18,7 +21,7 @@
                 <div ng-repeat="x in ProductoViewModel.Productos" class="col-md-4">
                     <div flex-xs flex-gt-xs="200" layout="column">
                         <md-card style="height:500px">
-                            <img style="height:240px;width:280px;" src="../Images/{{x.Image}}" />
+                            <img style="height:240px;width:280px;" src="data:{{x.Image.ContentType}};base64, {{x.Image.Archivo}}"/>
 
                             <md-card-title>
                                 <md-card-title-text>
@@ -48,6 +51,21 @@
              </div>
         </div>
     </div>
+    <div class="form-inline">
+
+        <ul class="pagination">
+            <li>
+                <a ng-click="VerMenos()">Prev</a>
+            </li>
+            <li ng-repeat="x in Paginas">
+                <a ng-click="VerPagina(x)">{{x}}</a>
+            </li>
+
+            <li>
+                <a ng-click="VerMas()">Next</a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <div ng-show="Crear">
@@ -55,3 +73,21 @@
     <input ng-model="Nuevo.Name" placeholder="Nombre" type="text" />
     <button ng-click="Guardar(Nuevo);Crear=false;" class="btn btn-primary">{{ProductoViewModel.Idioma.Save}}</button>
 </div>
+
+<script>
+    $("#prod").autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: "Product/GetName",
+                dataType: "json",
+                data: { name: request.term },
+                success: function (data) {
+                    response(data);
+                }
+
+            });
+
+        }
+
+    })
+</script>

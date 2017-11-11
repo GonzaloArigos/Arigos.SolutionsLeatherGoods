@@ -21,7 +21,6 @@
         <EntityTypeShape EntityType="LeatherGoodsModel.Order" Width="1.5" PointX="5.25" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="LeatherGoodsModel.OrderDetail" Width="1.5" PointX="7.5" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="LeatherGoodsModel.OrderNumber" Width="1.5" PointX="12.75" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeatherGoodsModel.Product" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="true" />
         <EntityTypeShape EntityType="LeatherGoodsModel.Rating" Width="1.5" PointX="8.25" PointY="2.25" IsExpanded="true" />
         <EntityTypeShape EntityType="LeatherGoodsModel.Setting" Width="1.5" PointX="14.75" PointY="12.875" IsExpanded="true" />
         <AssociationConnector Association="LeatherGoodsModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
@@ -31,16 +30,18 @@
         <AssociationConnector Association="LeatherGoodsModel.FK_ORDER_REFERENCE_Client" ManuallyRouted="false" />
         <AssociationConnector Association="LeatherGoodsModel.FK_RATING_REFERENCE_Client" ManuallyRouted="false" />
         <AssociationConnector Association="LeatherGoodsModel.FK_DEALER_REFERENCE_COUNTRY" ManuallyRouted="false" />
-        <AssociationConnector Association="LeatherGoodsModel.FK_PRODUCT_REFERENCE_Dealer" ManuallyRouted="false" />
         <AssociationConnector Association="LeatherGoodsModel.FK_dbo_LocaleStringResource_dbo_Language_Language_Id" ManuallyRouted="false" />
         <AssociationConnector Association="LeatherGoodsModel.FK_dbo_LocaleStringResource_dbo_LocaleResourceKey_LocaleResourceKey_Id" ManuallyRouted="false" />
         <AssociationConnector Association="LeatherGoodsModel.FK_ORDERDET_REFERENCE_ORDER" ManuallyRouted="false" />
-        <AssociationConnector Association="LeatherGoodsModel.FK_ORDERDET_REFERENCE_PRODUCT" ManuallyRouted="false" />
-        <AssociationConnector Association="LeatherGoodsModel.FK_RATING_REFERENCE_PRODUCT" ManuallyRouted="false" />
         <AssociationConnector Association="LeatherGoodsModel.AspNetUserRoles" ManuallyRouted="false" />
-        <AssociationConnector Association="LeatherGoodsModel.FK_CartItem_Product" />
         <EntityTypeShape EntityType="LeatherGoodsModel.Cart" Width="1.5" PointX="0.75" PointY="16" />
         <AssociationConnector Association="LeatherGoodsModel.FK_CARTITEM_REFERENCE_CART" />
+        <EntityTypeShape EntityType="LeatherGoodsModel.Product" Width="1.5" PointX="18.625" PointY="6.875" />
+        <AssociationConnector Association="LeatherGoodsModel.FK_CartItem_Product" />
+        <AssociationConnector Association="LeatherGoodsModel.FK_ORDERDET_REFERENCE_PRODUCT" />
+        <AssociationConnector Association="LeatherGoodsModel.FK_RATING_REFERENCE_PRODUCT" />
+        <EntityTypeShape EntityType="LeatherGoodsModel.Imagenes" Width="1.5" PointX="16.375" PointY="4" />
+        <AssociationConnector Association="LeatherGoodsModel.FK_Product_Imagenes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\SubirImagenRequest.cs" />
     <Compile Include="Requests\ConfirmarCarritoRequest.cs" />
     <Compile Include="Requests\AgregarAlCarritoRequest.cs" />
     <Compile Include="Responses\AllResponse.cs" />
     <Compile Include="Responses\FindResponse.cs" />
+    <Compile Include="Responses\SubirImagenResponse.cs" />
     <Compile Include="Responses\ProductResponse.cs" />
     <Compile Include="Responses\LanguageResponse.cs" />
   </ItemGroup>

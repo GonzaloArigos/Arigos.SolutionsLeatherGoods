@@ -12,3 +12,57 @@ textarea {
   resize: vertical;
 }
 /*# sourceMappingURL=Site.css.map */
+
+.rc-container-navbar {
+    display: flex;
+    padding-left: 1em;
+    padding-right: .5em;
+    flex-direction: row;
+    align-items: center;
+    max-width: 1200px;
+    justify-content: center;
+}
+
+@media (max-width: 767px) {
+    .rc-container-navbar {
+        justify-content: space-between;
+    }
+}
+
+.hint {
+    position: absolute;
+    left: 5px;
+    right: auto;
+    bottom: -15px;
+    font-size: 14px;
+    line-height: 14px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    color: grey;
+}
+
+.example-container {
+    width: 500px;
+    height: 300px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.dxc-bar {
+    background-color: #312b2b;
+    margin-top: 15px;
+}
+.example-sidenav {
+    padding: 20px;
+}
+
+.ImgBody {
+    background-size: 230px;
+    background-repeat: no-repeat;
+    background-image: url(https://image.freepik.com/iconos-gratis/triangulo-negro_318-11163.jpg);
+    background-position: right bottom;
+}

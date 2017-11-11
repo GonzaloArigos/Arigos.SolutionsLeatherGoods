@@ -1288,7 +1288,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="SPA\AddProduct.html" />
     <Content Include="SPA\Category.html" />
+    <Content Include="SPA\Controllers\AddProductController.js" />
     <Content Include="SPA\Controllers\ProductController.js" />
     <Content Include="SPA\Dialogs\CarritoDialog.html" />
     <Content Include="SPA\Dialogs\ProductDetailDialog.html" />

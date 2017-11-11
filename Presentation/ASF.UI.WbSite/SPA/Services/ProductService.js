@@ -5,10 +5,11 @@
 
 
 
-    service.GetAll = function () {
+    service.GetAll = function (skip) {
         var promise = $http({
             method: 'get',
-            url: '/Product/GetAll'
+            url: '/Product/GetAll',
+            params: {skip: skip}
         });
 
 
@@ -34,6 +35,17 @@
             method: 'post',
             url: '/Product/AgregarAlCarrito',
             data: { item: item }
+        });
+
+        return $q.when(promise);
+
+    };
+
+    service.PublicarProducto = function (file,product) {
+        var promise = $http({
+            method: 'post',
+            url: '/Product/PublicarProducto',
+            data: { file: file, product: product}
         });
 
         return $q.when(promise);
