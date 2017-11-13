@@ -30,6 +30,32 @@ namespace ASF.UI.WbSite.Controllers
             var Language = DataCache.Instance.GetLang(culture);
             return Language;
         }
+
+        public string GetAllNames()
+        {
+            Process.ProductProcess process = new Process.ProductProcess();
+            return JsonConvert.SerializeObject(process.GetAllNames(), Formatting.None,
+                                new JsonSerializerSettings()
+                                {
+                                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                });
+
+             
+
+        }
+
+        public string GetByName(string name)
+        {
+            Process.ProductProcess process = new Process.ProductProcess();
+            return JsonConvert.SerializeObject(process.GetByName(name), Formatting.None,
+                                new JsonSerializerSettings()
+                                {
+                                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                });
+
+
+
+        }
         public string GetAll(int skip)
         {
             int take = Convert.ToInt32(ConfigurationManager.AppSettings.Get("Take"));

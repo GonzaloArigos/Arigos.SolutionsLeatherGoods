@@ -1,15 +1,25 @@
-﻿angular.module('app').controller("ProductController", ["$scope", "$location", "ProductService", "$mdDialog", function ($scope, $location, ProductService, $mdDialog) {
+﻿angular.module('app').controller("ProductController", ["$scope", "$location", "ProductService", "$mdDialog", "$timeout", "$q", "$log", function ($scope, $location, ProductService, $mdDialog, $timeout, $q, $log) {
 
     $scope.Crear = false;
     $scope.Nuevo = {};
     $scope.agregarCarrito = false;
     $scope.Skip = 0;
     $scope.Paginas = [];
+
+    $scope.EstaBuscando = function () {
+        if ($scope.EsBusqueda){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     var all = function () {
+
         ProductService.GetAll($scope.Skip).then(
             function (d) {
                 $scope.ProductoViewModel = d.data;
-                
+
                 for (var i = 1; i <= $scope.ProductoViewModel.Paginas; i++) {
                     $scope.Paginas.push(i);
                 }
@@ -77,6 +87,106 @@
 
             });
     }
+
+    var self = this;
+
+    self.simulateQuery = false;
+    self.isDisabled = false;
+
+
+    // ******************************
+    // Internal methods
+    // ******************************
+
+    /**
+     * Search for repos... use $timeout to simulate
+     * remote dataservice call.
+     */
+    $scope.ResultadosTxt = [];
+    function querySearch(query) {
+        //var results = query ? self.repos.filter(createFilterFor(query)) : self.repos.Nombres,
+        //    deferred;
+        //if (self.simulateQuery) {
+        //    deferred = $q.defer();
+        //    $timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
+        //    return deferred.promise;
+        //} else {
+        //    return results;
+        //}
+        $scope.ResultadosTxt = [];
+        for (var i = 0; i < $scope.Nombres.length; i++){
+            var nombre = "";
+            nombre = $scope.Nombres[i].name;
+            if (nombre.toLowerCase().startsWith(query)) {
+                $scope.ResultadosTxt.push($scope.Nombres[i]);
+            }
+        }
+        
+        return $scope.ResultadosTxt;
+    }
+
+    function searchTextChange(text) {
+        $log.info('Text changed to ' + text);
+    }
+
+
+    function selectedItemChange(item) {
+        ProductService.GetByName(item.name).then(
+            function (d) {
+                $scope.EsBusqueda = true;
+                $scope.ResultadoBusqueda = d.data;
+                $scope.dialogVerProducto($scope.ResultadoBusqueda[0]);
+                return;
+            },
+            function (error) {
+
+                $scope.EsBusqueda = true;
+            });
+        $scope.EsBusqueda = true;
+    }
+
+    /**
+ * Create filter function for a query string
+ */
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+
+        return function filterFn(item) {
+            return (item.value.indexOf(lowercaseQuery) === 0);
+        };
+
+    }
+
+    /**
+     * Build `components` list of key/value pairs
+     */
+    function loadAll() {
+        var repos = [];
+        ProductService.GetAllNames().then(
+            function (d) {
+                $scope.Nombres = d.data;
+                for (var i = 0; i < $scope.Nombres.length; i++) {
+                    repos.push({ 'name': $scope.Nombres[i].name });
+                }
+
+                return repos.map(function (repo) {
+                    repo.value = repo.name.toLowerCase();
+                    return repo;
+                });
+            },
+            function (error) {
+
+
+            });
+
+       
+    }
+
+
+    self.repos = loadAll();
+    self.querySearch = querySearch;
+    self.selectedItemChange = selectedItemChange;
+    self.searchTextChange = searchTextChange;
 
     $scope.dialogVerProducto = function (producto) {
 

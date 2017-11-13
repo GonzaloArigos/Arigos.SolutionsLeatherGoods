@@ -17,6 +17,30 @@
 
     };
 
+    service.GetByName = function (item) {
+        var promise = $http({
+            method: 'get',
+            url: '/Product/GetByName',
+            params: { name: item }
+        });
+
+
+        return $q.when(promise);
+
+    };
+
+    service.GetAllNames = function () {
+        var promise = $http({
+            method: 'get',
+            url: '/Product/GetAllNames'
+        });
+
+
+        return $q.when(promise);
+
+    };
+
+
     service.GetCartByIdClient = function (id) {
         var promise = $http({
             method: 'get',

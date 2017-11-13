@@ -37,11 +37,26 @@ namespace ASF.UI.Process
             HttpPost<AgregarAlCarritoRequest>("rest/Product/AgregarAlCarrito", Request, MediaType.Json);
         }
 
+        public List<object> GetAllNames()
+        {
+            var dic = new Dictionary<string, object>();
+            var response = HttpGet<List<object>>("rest/Product/GetAllNames", dic, MediaType.Json);
+            return response;
+        }
+
         public void ConfirmarCarrito(string user)
         {
             ConfirmarCarritoRequest request = new ConfirmarCarritoRequest();
             request.User = user;
             HttpPost<ConfirmarCarritoRequest>("rest/Product/ConfirmarCarrito", request, MediaType.Json);
+        }
+
+        public List<Product> GetByName(string name)
+        {
+            var dic = new Dictionary<string, object>();
+            dic.Add("name",name);
+            var response = HttpGet<GetByNameResponse>("rest/Product/GetByName", dic, MediaType.Json);
+            return response.Productos;
         }
 
         public void PublicarProducto(Product producto)

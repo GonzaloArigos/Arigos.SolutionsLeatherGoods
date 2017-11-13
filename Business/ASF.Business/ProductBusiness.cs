@@ -71,5 +71,44 @@ namespace ASF.Business
             DAC.PublicarProducto(producto);
 
         }
+
+        public static List<object> GetAllNames()
+        {
+            var DAC = new Data.ProductDAC();
+
+           List<Data.Product> productos = DAC.GetAllNames();
+
+
+            var retorno = new List<object>();
+            foreach (var item in productos)
+            {
+                var nombre = new
+                {
+                    name = item.Title,
+                    Image = item.Imagenes.Archivo,
+                    ContentType = item.Imagenes.ContentType
+                };
+                retorno.Add(nombre);
+            }
+            return retorno;
+        }
+
+        public static List<Product> GetByName(string name)
+        {
+            var DAC = new Data.ProductDAC();
+
+            var nomap = DAC.GetByName(name);
+            List<Product> retorno = new List<Product>();
+            foreach (var item in nomap)
+            {
+                var x = new Product();
+                x.Image = new Imagenes();
+                Framework.Utilities.ReflectionUtilities.MapObjects(item, x);
+                Framework.Utilities.ReflectionUtilities.MapObjects(item.Imagenes, x.Image);
+                retorno.Add(x);
+            }
+
+            return retorno;
+        }
     }
 }

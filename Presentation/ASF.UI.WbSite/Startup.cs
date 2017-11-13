@@ -52,7 +52,7 @@ namespace ASF.UI.WbSite
 
             ConfigureContainer(app);
 
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            //FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
     }
 }

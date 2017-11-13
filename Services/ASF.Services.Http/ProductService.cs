@@ -70,6 +70,49 @@ namespace ASF.Services.Http
             }
         }
 
+        [HttpGet]
+        [Route("GetAllNames")]
+        public List<object> GetAllNames()
+        {
+            try
+            {
+                
+                return ProductBusiness.GetAllNames();
+            }
+            catch (Exception ex)
+            {
+                var httpError = new HttpResponseMessage()
+                {
+                    StatusCode = (HttpStatusCode)422,
+                    ReasonPhrase = ex.Message
+                };
+
+                throw new HttpResponseException(httpError);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetByName")]
+        public GetByNameResponse GetByName(string name)
+        {
+            try
+            {
+               var lista = ProductBusiness.GetByName(name);
+                var retorno = new GetByNameResponse();
+                retorno.Productos = lista;
+                return retorno;
+            }
+            catch (Exception ex)
+            {
+                var httpError = new HttpResponseMessage()
+                {
+                    StatusCode = (HttpStatusCode)422,
+                    ReasonPhrase = ex.Message
+                };
+
+                throw new HttpResponseException(httpError);
+            }
+        }
         [HttpPost]
         [Route("AgregarAlCarrito")]
         public void AgregarAlCarrito(AgregarAlCarritoRequest Request)

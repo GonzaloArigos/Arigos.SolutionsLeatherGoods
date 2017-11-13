@@ -1,27 +1,51 @@
 ﻿<md-toolbar class="dxc-bar">
     <div class="md-toolbar-tools">
 
-        <h2><span class="glyphicon glyphicon-edit"></span> {{ProductoViewModel.Idioma.Producto}}</h2>  
+        <h2><span class="glyphicon glyphicon-edit"></span> {{ProductoViewModel.Idioma.Producto}}</h2>
 
     </div>
 </md-toolbar>
 
-<div>
-    <md-button ng-click="dialogVerCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Ver carrito</md-button>
-    <br />
-    <br />
+
+<md-button ng-click="dialogVerCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span> {{ProductoViewModel.Idioma.SeeCart}}</md-button>
+<br />
+
+<div ng-controller="ProductController as ctrl" layout="column" ng-cloak>
+    <md-content layout-padding layout="column">
+        <form ng-submit="$event.preventDefault()">
+
+            <md-autocomplete ng-disabled="ctrl.isDisabled"
+                             md-no-cache="ctrl.noCache"
+                             md-selected-item="ctrl.selectedItem"
+                             md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                             md-search-text="ctrl.searchText"
+                             md-selected-item-change="ctrl.selectedItemChange(item)"
+                             md-items="item in ctrl.querySearch(ctrl.searchText)"
+                             md-item-text="item.name"
+                             md-min-length="2"
+                             placeholder="{{ProductoViewModel.Idioma.SearchProduct}}"
+                             md-menu-class="autocomplete-custom-template">
+                <md-item-template>
+                    <span class="item-title">
+                   <span><img style="height:30px;width:30px;" src="data:{{item.ContentType}};base64, {{item.Image}}" /> </span>     <span> {{item.name.toUpperCase()}} </span>
+                    </span>
+
+                </md-item-template>
+            </md-autocomplete>
+        </form>
+    </md-content>
 </div>
 
 <div class="container-fluid">
 
     <div class="row">
-        <div  class="col-md-12">
+        <div class="col-md-12">
             <div class="row">
 
                 <div ng-repeat="x in ProductoViewModel.Productos" class="col-md-4">
                     <div flex-xs flex-gt-xs="200" layout="column">
                         <md-card style="height:500px">
-                            <img style="height:240px;width:280px;" src="data:{{x.Image.ContentType}};base64, {{x.Image.Archivo}}"/>
+                            <img style="height:240px;width:280px;" src="data:{{x.Image.ContentType}};base64, {{x.Image.Archivo}}" />
 
                             <md-card-title>
                                 <md-card-title-text>
@@ -44,11 +68,12 @@
                                 <!--<md-button>Action 2</md-button>-->
                             </md-card-actions>
                         </md-card>
-                        </div>
-
-
                     </div>
-             </div>
+
+
+                </div>
+
+            </div>
         </div>
     </div>
     <div class="form-inline">
@@ -68,26 +93,8 @@
     </div>
 </div>
 
-<div ng-show="Crear">
+<!--<div ng-show="Crear">
     <label>{{ProductoViewModel.Idioma.Name}}</label>
     <input ng-model="Nuevo.Name" placeholder="Nombre" type="text" />
     <button ng-click="Guardar(Nuevo);Crear=false;" class="btn btn-primary">{{ProductoViewModel.Idioma.Save}}</button>
-</div>
-
-<script>
-    $("#prod").autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: "Product/GetName",
-                dataType: "json",
-                data: { name: request.term },
-                success: function (data) {
-                    response(data);
-                }
-
-            });
-
-        }
-
-    })
-</script>
+</div>-->

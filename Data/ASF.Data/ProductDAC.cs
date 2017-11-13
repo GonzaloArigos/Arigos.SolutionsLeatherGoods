@@ -26,7 +26,15 @@ namespace ASF.Data
 
         public Cart GetCartByIdClient(int id)
         {
-            return db.Cart.OrderBy(i => i.Id).ToList().Last();
+            var carrito = db.Cart.OrderBy(i => i.Id).ToList().LastOrDefault();
+            if (carrito == null)
+            {
+                GenerarNuevoCarritoUsuario((id.ToString()));
+                return db.Cart.OrderBy(i => i.Id).ToList().LastOrDefault();
+            }
+            else{
+                return carrito;
+            }
         }
 
         public List<Product> GetAll(int take, int skip)
@@ -40,7 +48,15 @@ namespace ASF.Data
 
             var UserId = db.AspNetUsers.Where(i => i.Email == user).FirstOrDefault().Id;
 
-            CartItem.CartId = db.Cart.Where(k=> k.IdUsuario == UserId).OrderBy(i => i.Id).ToList().Last().Id;
+            var cart = db.Cart.Where(k => k.IdUsuario == UserId).OrderBy(i => i.Id).ToList().LastOrDefault();
+            if (cart == null)
+            {
+                GenerarNuevoCarritoUsuario(UserId.ToString());
+            }
+            else
+            {
+                CartItem.CartId = cart.Id;
+            }            
 
             CartItem.Price = item.Price;
             CartItem.ProductId = item.ProductId;
@@ -73,6 +89,16 @@ namespace ASF.Data
 
             AgregarDetalleOrden(Carrito, order);
             GenerarNuevoCarritoUsuario(UserId);
+        }
+
+        public List<Product> GetByName(string name)
+        {
+            return db.Product.Where(i=> i.Title.ToLower().Contains(name)).ToList();
+        }
+
+        public List<Product> GetAllNames()
+        {
+            return db.Product.ToList();
         }
 
         public void PublicarProducto(ASF.Entities.Product producto)
