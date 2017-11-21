@@ -199,6 +199,10 @@
                 $scope.CartItem = {};
                 $scope.OK = false;
 
+                $scope.Cerrar = function() {
+                    $mdDialog.hide();
+                }
+
                 $scope.agregarAlCarrito = function () {
 
                     $scope.CartItem = {
@@ -253,6 +257,10 @@
                 }
 
                 $scope.verCarrito(1);
+
+                $scope.Cerrar = function () {
+                    $mdDialog.hide();
+                }
 
                 $scope.ElaborarResumenPago = function () {
                     $scope.Procesar = true;

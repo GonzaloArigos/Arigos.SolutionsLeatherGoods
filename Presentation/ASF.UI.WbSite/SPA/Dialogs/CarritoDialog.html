@@ -68,7 +68,7 @@
 
     <md-dialog-actions layout="row">
         <span flex></span>
-
+        <md-button ng-click="Cerrar()" class="md-raised md-primary"><span class=""></span>Cerrar</md-button>
         <md-button ng-show="!Procesar && !NohayItems" ng-click="ElaborarResumenPago()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span>Procesar orden</md-button>
         <md-button ng-show="Procesar && !CompraFinalizada && !NohayItems" ng-click="ConfirmarCarrito()" class="md-raised md-primary"><span class="glyphicon glyphicon-shopping-cart"></span>Confirmar</md-button>
     </md-dialog-actions>
